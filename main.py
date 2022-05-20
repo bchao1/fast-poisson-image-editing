@@ -16,11 +16,10 @@ class PoissonImageBlender:
         self.img_h, self.img_w = self.mask.shape
 
         self.mask = np.where(self.mask > 0, 1, 0) # binary 0, 1 mask
-        self.inner_mask, self.boundary_mask, self.outer_mask = utils.process_mask(self.mask)
+        self.inner_mask, self.boundary_mask = utils.process_mask(self.mask)
         
         self.pixel_ids = utils.get_pixel_ids(self.mask) 
         self.inner_ids = utils.get_masked_values(self.pixel_ids, self.inner_mask).flatten()
-        self.outer_ids = utils.get_masked_values(self.pixel_ids, self.outer_mask).flatten()
         self.boundary_ids = utils.get_masked_values(self.pixel_ids, self.boundary_mask).flatten()
         self.mask_ids = utils.get_masked_values(self.pixel_ids, self.mask).flatten() # boundary + inner
         
@@ -33,15 +32,10 @@ class PoissonImageBlender:
     def construct_A_matrix(self):
         A = scipy.sparse.lil_matrix((len(self.mask_ids), len(self.mask_ids)))
 
-        n1 = self.inner_ids - 1
-        n2 = self.inner_ids + 1
-        n3 = self.inner_ids - self.img_w 
-        n4 = self.inner_ids + self.img_w
-
-        n1_pos = np.searchsorted(self.mask_ids, n1)
-        n2_pos = np.searchsorted(self.mask_ids, n2)
-        n3_pos = np.searchsorted(self.mask_ids, n3)
-        n4_pos = np.searchsorted(self.mask_ids, n4)
+        n1_pos = np.searchsorted(self.mask_ids, self.inner_ids - 1)
+        n2_pos = np.searchsorted(self.mask_ids, self.inner_ids + 1)
+        n3_pos = np.searchsorted(self.mask_ids, self.inner_ids - self.img_w )
+        n4_pos = np.searchsorted(self.mask_ids, self.inner_ids + self.img_w)
 
         A[self.inner_pos, n1_pos] = 1
         A[self.inner_pos, n2_pos] = 1

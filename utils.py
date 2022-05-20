@@ -31,8 +31,7 @@ def rgb2gray(img):
 def process_mask(mask):
     boundary = find_boundaries(mask, mode="inner").astype(int)
     inner = mask - boundary
-    outer = 1 - mask
-    return inner, boundary, outer
+    return inner, boundary
 
 def compute_laplacian(img):
     kernel = np.array([
