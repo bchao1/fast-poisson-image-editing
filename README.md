@@ -21,6 +21,9 @@ python3 main.py --help
 
 |Source|Target|Mask|Result|
 |--|--|--|--|
+|![src](data/test1/source.png)|![src](data/test1/target.png)|![src](data/test1/mask.png)|![src](data/test1/result.png)|
+|![src](data/test2/source.jpg)|![src](data/test2/target.jpg)|![src](data/test2/mask.jpg)|![src](data/test2/result.png)|
+|![src](data/test3/source.png)|![src](data/test3/target.png)|![src](data/test3/mask.png)|![src](data/test3/result.png)|
 |![src](data/test4/source.png)|![src](data/test4/target.png)|![src](data/test4/mask.png)|![src](data/test4/result.png)|
 
 ## Notes

@@ -68,7 +68,7 @@ class PoissonImageBlender:
             return Ixx + Iyy
         elif mode == "alpha":
             src_laplacian = utils.compute_laplacian(src)
-            arget_laplacian = utils.compute_laplacian(target)
+            target_laplacian = utils.compute_laplacian(target)
             return alpha * src_laplacian + (1 - alpha) * target_laplacian
         else:
             raise ValueError(f"Gradient mixing mode '{mode}' not supported!")
