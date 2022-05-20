@@ -1,6 +1,7 @@
+import os
 import cv2
 import numpy as np
-import scipy.sparse
+import scipy.sparse.linalg
 from PIL import Image
 import matplotlib.pyplot as plt
 from argparse import ArgumentParser 
@@ -125,8 +126,8 @@ if __name__ == "__main__":
     else:
         img = blender.poisson_blend_rgb(args.gradient_mixing_mode, args.gradient_mixing_alpha)
     
-    plt.imshow(img)
-    plt.show()
+    img = (img * 255).astype(np.uint8)
+    Image.fromarray(img).save(os.path.join(args.data_dir, "result.png"))
 
     
 
