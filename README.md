@@ -6,6 +6,8 @@ An implementation of the [Poisson Image Editing](https://dl.acm.org/doi/10.1145/
 - Seamless cloning - importing gradients
 - Seamless cloning - mixing gradients
 
+## Usage
+
 ## Todo
 - Local illumination changes
 - Local color changes

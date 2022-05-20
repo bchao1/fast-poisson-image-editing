@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from skimage.segmentation import find_boundaries
 import scipy.signal
 
+
 def read_image(folder, name, scale=1, gray=False):
     for filename in glob.glob(folder + "/*"):
         if os.path.splitext(os.path.basename(filename))[0] == name:

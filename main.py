@@ -1,17 +1,19 @@
 import cv2
 import numpy as np
+import scipy.sparse
 from PIL import Image
 import matplotlib.pyplot as plt
-import scipy.sparse
+from argparse import ArgumentParser 
 
 import utils
 
 class PoissonImageBlender:
-    def __init__(self, dataset_root):
+    def __init__(self, dataset_root, solver):
         self.mask = utils.read_image(f"{dataset_root}", "mask", scale=1, gray=True)
         self.src_rgb = utils.read_image(f"{dataset_root}", "source", scale=1, gray=False)
         self.target_rgb = utils.read_image(f"{dataset_root}", "target", scale=1,  gray=False)
         
+        self.solver = getattr(scipy.sparse.linalg, solver)
 
         self.img_h, self.img_w = self.mask.shape
 
@@ -44,7 +46,7 @@ class PoissonImageBlender:
         A[self.inner_pos, self.inner_pos] = -4 
 
         A[self.boundary_pos, self.boundary_pos] = 1
-        return A
+        return A.tocsr()
     
     def construct_b(self, inner_gradient_values, boundary_pixel_values):
         b = np.zeros(len(self.mask_ids))
@@ -70,8 +72,8 @@ class PoissonImageBlender:
         else:
             raise ValueError(f"Gradient mixing mode '{mode}' not supported!")
 
-    def poisson_blend_channel(self, src, target):
-        mixed_gradients = self.compute_mixed_gradients(src, target, mode="max")
+    def poisson_blend_channel(self, src, target, gradient_mixing_mode, gradient_mixing_alpha):
+        mixed_gradients = self.compute_mixed_gradients(src, target, gradient_mixing_mode, gradient_mixing_alpha)
 
         boundary_pixel_values = utils.get_masked_values(target, self.boundary_mask).flatten()
         inner_gradient_values = utils.get_masked_values(mixed_gradients, self.inner_mask).flatten()
@@ -80,7 +82,7 @@ class PoissonImageBlender:
         b = self.construct_b(inner_gradient_values, boundary_pixel_values)
 
         # Solve Ax = b
-        x = scipy.sparse.linalg.lsmr(self.A, b)[0]
+        x = self.solver(self.A, b)[0]
         new_src = np.zeros_like(src).flatten()
         new_src[self.mask_pos] = x
         new_src = new_src.reshape(src.shape)
@@ -90,22 +92,41 @@ class PoissonImageBlender:
         
         return poisson_blended_img
     
-    def poisson_blend_rgb(self):
+    def poisson_blend_rgb(self, gradient_mixing_mode, gradient_mixing_alpha):
         poisson_blended_img_rgb = []
         for i in range(self.src_rgb.shape[-1]):
             print(f"Blending channel {i} ...")
-            poisson_blended_img_rgb.append(self.poisson_blend_channel(self.src_rgb[..., i], self.target_rgb[..., i]))
+            poisson_blended_img_rgb.append(
+                self.poisson_blend_channel(
+                    self.src_rgb[..., i], self.target_rgb[..., i],
+                    gradient_mixing_mode, gradient_mixing_alpha
+                )
+            )
         return np.dstack(poisson_blended_img_rgb)
     
-    def poisson_blend_gray(self):
+    def poisson_blend_gray(self, gradient_mixing_mode, gradient_mixing_alpha):
         src_gray = utils.rgb2gray(self.src_rgb)
         target_gray = utils.rgb2gray(self.target_rgb)
-        return self.poisson_blend_channel(src_gray, target_gray)
+        return self.poisson_blend_channel(src_gray, target_gray, gradient_mixing_mode, gradient_mixing_alpha)
 
 if __name__ == "__main__":
-    blender = PoissonImageBlender("data/test4/")
-    img = blender.poisson_blend_rgb()
-    print(img.shape)
+    parser = ArgumentParser()
+    parser.add_argument("--data_dir", type=str, required=True)
+    parser.add_argument("--grayscale", action="store_true")
+    parser.add_argument("--solver", type=str, default="lsqr")
+    parser.add_argument("--gradient_mixing_mode", type=str, default="max", choices=["max", "alpha"])
+    parser.add_argument("--gradient_mixing_alpha", type=float, default=1.0)
+    args = parser.parse_args()
+
+    blender = PoissonImageBlender(args.data_dir, args.solver)
+
+    if args.grayscale:
+        img = blender.poisson_blend_gray(args.gradient_mixing_mode, args.gradient_mixing_alpha)
+    else:
+        img = blender.poisson_blend_rgb(args.gradient_mixing_mode, args.gradient_mixing_alpha)
+    
     plt.imshow(img)
     plt.show()
+
+    
 
