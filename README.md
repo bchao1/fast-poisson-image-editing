@@ -56,5 +56,6 @@ To run all experiments using the given datasets, run
 - If you want to use conjugate gradient solvers, use `bicg`, `bicgstab` or `cgs`. Do not use `solver == "cg"` since the A matrix is not hermitian (or symmetric since A is real).
 
 ## Todo
+- Add `PoissonEditor` base class for code reuse
 - Local illumination changes
 - Local color changes
