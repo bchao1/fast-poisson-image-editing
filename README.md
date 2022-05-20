@@ -7,6 +7,7 @@ An implementation of the [Poisson Image Editing](https://dl.acm.org/doi/10.1145/
 - Seamless cloning - mixing gradients
 
 ## Usage
+To test on your own dataset, run
 ```
 python3 main.py --help
 ```
@@ -16,6 +17,11 @@ python3 main.py --help
 - `solver`: Linear solver to use when solving the poisson blending problem. The solver should be functions in the `scipy.sparse.linalg` library.
 - `gradient_mixing_mode`: Method to mix source and target image gradients. `max` implements *3. Seamless cloning - Mixing gradients* section in the paper, while `alpha` + `gradient_mixing_alpha == 1.0` implements *3. Seamless cloning - Importing gradients* section. 
 - `gradient_mixing_alpha`: Alpha to blend source and target image gradients. Has an effect only when `gradient_mixing_mode == "alpha"`. 
+   
+To run all experiments using datasets from the original paper, run
+```
+./run.sh
+```
 
 ## Results
 
