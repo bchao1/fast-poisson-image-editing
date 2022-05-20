@@ -52,8 +52,8 @@ To run all experiments using the given datasets, run
 |![](data/texture3/texture.jpg)|![](data/texture3/orig_tile.png)|![](data/texture3/new_tile.png)|
 
 ## Notes
-- `solver == "spsolve"` gives in bad results. As stated in the [documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html#scipy.sparse.linalg.spsolve) of `spsolve`, the solver assumes the solution to be sparse. However, this is not the case for Poisson blending, since the transformed source field is not sparse.
-- If you want to use conjudate gradient solves, use `bicg`, `bicgstab` or `cgs`. Do not use `solver == "cg"` since the A matrix is not hermitian (or symmetric since A is real).
+- `solver == "spsolve"` gives bad results. As stated in the [documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html#scipy.sparse.linalg.spsolve) of `spsolve`, the solver assumes the solution to be sparse. However, this is not our case since the transformed source field is not sparse.
+- If you want to use conjugate gradient solvers, use `bicg`, `bicgstab` or `cgs`. Do not use `solver == "cg"` since the A matrix is not hermitian (or symmetric since A is real).
 
 ## Todo
 - Local illumination changes
