@@ -8,7 +8,7 @@ from argparse import ArgumentParser
 
 import utils
 
-class PoissonImageBlender:
+class PoissonSeamlessCloner:
     def __init__(self, dataset_root, solver):
         self.mask = utils.read_image(f"{dataset_root}", "mask", scale=1, gray=True)
         self.src_rgb = utils.read_image(f"{dataset_root}", "source", scale=1, gray=False)
@@ -119,12 +119,12 @@ if __name__ == "__main__":
     parser.add_argument("--gradient_mixing_alpha", type=float, default=1.0, help="Alpha value for gradient mixing. Mode 'max' does not depend on alpha.")
     args = parser.parse_args()
 
-    blender = PoissonImageBlender(args.data_dir, args.solver)
+    cloner = PoissonSeamlessCloner(args.data_dir, args.solver)
 
     if args.grayscale:
-        img = blender.poisson_blend_gray(args.gradient_mixing_mode, args.gradient_mixing_alpha)
+        img = cloner.poisson_blend_gray(args.gradient_mixing_mode, args.gradient_mixing_alpha)
     else:
-        img = blender.poisson_blend_rgb(args.gradient_mixing_mode, args.gradient_mixing_alpha)
+        img = cloner.poisson_blend_rgb(args.gradient_mixing_mode, args.gradient_mixing_alpha)
     
     img = (img * 255).astype(np.uint8)
     Image.fromarray(img).save(os.path.join(args.data_dir, "result.png"))
