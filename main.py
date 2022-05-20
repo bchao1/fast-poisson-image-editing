@@ -111,11 +111,11 @@ class PoissonImageBlender:
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--data_dir", type=str, required=True)
-    parser.add_argument("--grayscale", action="store_true")
-    parser.add_argument("--solver", type=str, default="lsqr")
-    parser.add_argument("--gradient_mixing_mode", type=str, default="max", choices=["max", "alpha"])
-    parser.add_argument("--gradient_mixing_alpha", type=float, default=1.0)
+    parser.add_argument("--data_dir", type=str, required=True, help="Folder of mask, source, and target image files.")
+    parser.add_argument("--grayscale", action="store_true", help="Convert input to grayscale images.")
+    parser.add_argument("--solver", type=str, default="lsqr", help="Linear system solver.")
+    parser.add_argument("--gradient_mixing_mode", type=str, default="max", choices=["max", "alpha"], help="Gradient mixing modes.")
+    parser.add_argument("--gradient_mixing_alpha", type=float, default=1.0, help="Alpha value for gradient mixing. Mode 'max' does not depend on alpha.")
     args = parser.parse_args()
 
     blender = PoissonImageBlender(args.data_dir, args.solver)
