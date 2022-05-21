@@ -7,8 +7,15 @@ An implementation of the [Poisson Image Editing](https://dl.acm.org/doi/10.1145/
 - Seamless cloning - mixing gradients
 - Seamless tiling
 - Texture flattening
+- Local illumination change
 
 ## Usage
+
+To run all experiments using the given datasets (contains testing images in the paper and this README file), run
+```
+./run_experiments.sh
+```
+
 ### Seamless cloning
 To test on your own dataset, run
 ```
@@ -20,11 +27,6 @@ python3 seamless_cloning.py --help
 - `solver`: Linear solver to use when solving the poisson blending problem. The solver should be functions in the `scipy.sparse.linalg` library.
 - `gradient_mixing_mode`: Method to mix source and target image gradients. `max` implements *3. Seamless cloning - Mixing gradients* section in the paper, while `alpha` + `gradient_mixing_alpha == 1.0` implements *3. Seamless cloning - Importing gradients* section. 
 - `gradient_mixing_alpha`: Alpha to blend source and target image gradients. Has an effect only when `gradient_mixing_mode == "alpha"`. 
-   
-To run all experiments using datasets from the original paper, run
-```
-./run_cloning.sh
-```
 
 ### Seamless tiling
 To test on your own dataset, run
@@ -32,24 +34,21 @@ To test on your own dataset, run
 python3 seamless_tiling.py --help
 ```
 
-To run all experiments using the given datasets, run
-```
-./run_tiling.sh
-```
-
 ### Texture flattening
 To test on your own dataset, run
 ```
 python3 texture_flattening.py --help
 ```
-- `use_edge`: Use `edge.*` edge map in the dataset folder. If this flag is not set, then computes the edge map from provided source image using Canny edge detector and binary dilation.
+- `use_edge`: Use `edge.*` edge map image file in the folder specified in the `data_dir` folder. If this flag is not set, then computes the edge map from provided source image using Canny edge detector and binary dilation.
 - `canny_threshold`: Thresholding parameters for Canny edge detector. You can play with this parameter for different flattening results. See the [documentation](https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html) for more information.
 - `edge_dilation_kernel`: Kernel size to dilate detected edges. The kernel is a square box filter filled with ones.
 
-To run all experiments using the given datasets, run
+### Local illumination change
+To test on your own dataset, run
 ```
-./run_texture_flattening.sh
+python3 local_illumination_change.py --help
 ```
+- `data_dir`: Folder that contains the input image files. The folder should contain image files named `mask` and `source`. The file extension of the files can be arbitrary, as long as the files are valid image files. The illumination of the regions specified by the mask will be modified.
 
 ## Results
 ### Seamless cloning
@@ -70,11 +69,16 @@ To run all experiments using the given datasets, run
 |Source|Mask|Edge|Flattened|
 |--|--|--|--|
 |![](data/test5/source.jpg)|![](./data/test5/mask.png)|![](data/test5/edge_canny.png)|![](data/test5/result.png)|
+
+### Local illumination change
+|Source|Mask|Modified|
+|--|--|--|
+|![](data/illum1/source.jpg)|![](./data/illum1/mask.jpg)|![](data/illum1/result.png)|
+
 ## Notes
 - `solver == "spsolve"` gives bad results. As stated in the [documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html#scipy.sparse.linalg.spsolve) of `spsolve`, the solver assumes the solution to be sparse. However, this is not our case since the transformed source field is not sparse.
 - If you want to use conjugate gradient solvers, use `bicg`, `bicgstab` or `cgs`. Do not use `solver == "cg"` since the A matrix is not hermitian (or symmetric since A is real).
 
 ## Todo
 - Add `PoissonEditor` base class for code reuse
-- Local illumination changes
 - Local color changes

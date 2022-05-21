@@ -18,7 +18,7 @@ class PoissonSeamlessCloner:
 
         self.img_h, self.img_w = self.mask.shape
 
-        self.mask = np.where(self.mask > 0, 1, 0) # binary 0, 1 mask
+        _, self.mask = cv2.threshold(self.mask, 0.5, 1, cv2.THRESH_BINARY) # fix here
         self.inner_mask, self.boundary_mask = utils.process_mask(self.mask)
         
         self.pixel_ids = utils.get_pixel_ids(self.mask) 
