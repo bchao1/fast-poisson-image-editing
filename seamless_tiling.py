@@ -82,7 +82,6 @@ class PoissonSeamlessTiler:
     def poisson_tile_rgb(self):
         new_src_rgb = []
         for i in range(self.src_rgb.shape[-1]):
-            print(f"Tiling channel {i} ...")
             new_src_rgb.append(self.poisson_tile_channel(self.src_rgb[..., i]))
         return np.dstack(new_src_rgb)
     
@@ -98,7 +97,7 @@ if __name__ == "__main__":
     parser.add_argument("--data_dir", type=str, required=True, help="Folder of mask, source, and target image files.")
     parser.add_argument("--scale", type=float, default=1.0, help="Scaling image height and width.")
     parser.add_argument("--grayscale", action="store_true", help="Convert input to grayscale images.")
-    parser.add_argument("--solver", type=str, default="lsqr", help="Linear system solver.")
+    parser.add_argument("--solver", type=str, default="bicg", help="Linear system solver.")
     args = parser.parse_args()
 
     tiler = PoissonSeamlessTiler(args.data_dir, args.solver, args.scale)

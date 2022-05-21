@@ -12,7 +12,6 @@ import scipy.signal
 def read_image(folder, name, scale=1, gray=False):
     for filename in glob.glob(folder + "/*"):
         if os.path.splitext(os.path.basename(filename))[0] == name:
-            print(filename)
             break
     img = Image.open(os.path.join(filename))
     if scale != 1:

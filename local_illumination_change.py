@@ -92,7 +92,6 @@ class PoissonIlluminationChanger:
     def poisson_illum_change_rgb(self):
         poisson_illum_changed_img_rgb = []
         for i in range(self.src_rgb.shape[-1]):
-            print(f"Blending channel {i} ...")
             poisson_illum_changed_img_rgb.append(
                 self.poisson_illum_change_channel(self.src_rgb[..., i])
             )
@@ -104,25 +103,22 @@ class PoissonIlluminationChanger:
         return self.poisson_illum_change_channel(src_gray)
 
 if __name__ == "__main__":
+    import time
+
     parser = ArgumentParser()
     parser.add_argument("--data_dir", type=str, required=True, help="Folder of mask, source, and target image files.")
     parser.add_argument("--grayscale", action="store_true", help="Convert input to grayscale images.")
-    parser.add_argument("--solver", type=str, default="lsqr", help="Linear system solver.")
+    parser.add_argument("--solver", type=str, default="bicg", help="Linear system solver.")
     args = parser.parse_args()
 
     changer = PoissonIlluminationChanger(args.data_dir, args.solver)
 
+    
     if args.grayscale:
         img = changer.poisson_illum_change_gray()
     else:
         img = changer.poisson_illum_change_rgb()
     
-    fig, axes = plt.subplots(1, 3)
-    axes[0].imshow(changer.src_rgb)
-    axes[1].imshow(changer.mask, cmap="gray")
-    axes[2].imshow(img)
-    plt.show()
-
     img = (img * 255).astype(np.uint8)
     Image.fromarray(img).save(os.path.join(args.data_dir, "result.png"))
 

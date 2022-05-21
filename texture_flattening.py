@@ -92,7 +92,6 @@ class PoissonTextureFlattener:
     def poisson_texture_flatten_rgb(self):
         poisson_flattened_img_rgb = []
         for i in range(self.src_rgb.shape[-1]):
-            print(f"Blending channel {i} ...")
             poisson_flattened_img_rgb.append(
                 self.poisson_texture_flatten_channel(self.src_rgb[..., i])
             )
@@ -108,7 +107,7 @@ if __name__ == "__main__":
     parser.add_argument("--data_dir", type=str, required=True, help="Folder of mask, source, and target image files.")
     parser.add_argument("--use_edge", action="store_true", help="Use provided edge map. If not specified, computes depth map from source image.")
     parser.add_argument("--grayscale", action="store_true", help="Convert input to grayscale images.")
-    parser.add_argument("--solver", type=str, default="lsqr", help="Linear system solver.")
+    parser.add_argument("--solver", type=str, default="bicg", help="Linear system solver.")
 
     parser.add_argument("--canny_threshold", type=float, default=[100, 200], nargs="+")
     parser.add_argument("--edge_dilation_kernel", type=int, default=3)
@@ -120,12 +119,6 @@ if __name__ == "__main__":
         img = flattener.poisson_texture_flatten_gray()
     else:
         img = flattener.poisson_texture_flatten_rgb()
-    
-    fig, axes = plt.subplots(1, 3)
-    axes[0].imshow(flattener.src_rgb)
-    axes[1].imshow(flattener.edge, cmap="gray")
-    axes[2].imshow(img)
-    plt.show()
 
     img = (img * 255).astype(np.uint8)
     Image.fromarray(img).save(os.path.join(args.data_dir, "result.png"))

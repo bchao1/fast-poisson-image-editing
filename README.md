@@ -2,12 +2,20 @@
 
 An implementation of the [Poisson Image Editing](https://dl.acm.org/doi/10.1145/882262.882269) paper by Perez et al. 2003.
 
+![teaser](data/teaser.png)
+
 ## Features
 - Seamless cloning - importing gradients
 - Seamless cloning - mixing gradients
 - Seamless tiling
 - Texture flattening
 - Local illumination change
+
+## Comparison with other implementations
+There are many open source Python implementations of Poisson image editing. However, most implementations focus only on image *bledning*, while ignoring other Poisson image editing applications listed in the paper. This implementation aims to faithfully reproduce all experiments and results presented in the paper. The following table shows implemented functionalities:
+   
+Furthermore, this implementation is signifacantly *faster* than others. The following table shows the profiled run time of seamless cloning on different datasets:
+
 
 ## Usage
 

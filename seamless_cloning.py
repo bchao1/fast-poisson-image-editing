@@ -96,7 +96,6 @@ class PoissonSeamlessCloner:
     def poisson_blend_rgb(self, gradient_mixing_mode, gradient_mixing_alpha):
         poisson_blended_img_rgb = []
         for i in range(self.src_rgb.shape[-1]):
-            print(f"Blending channel {i} ...")
             poisson_blended_img_rgb.append(
                 self.poisson_blend_channel(
                     self.src_rgb[..., i], self.target_rgb[..., i],
@@ -114,7 +113,7 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--data_dir", type=str, required=True, help="Folder of mask, source, and target image files.")
     parser.add_argument("--grayscale", action="store_true", help="Convert input to grayscale images.")
-    parser.add_argument("--solver", type=str, default="lsqr", help="Linear system solver.")
+    parser.add_argument("--solver", type=str, default="bicg", help="Linear system solver.")
     parser.add_argument("--gradient_mixing_mode", type=str, default="max", choices=["max", "alpha"], help="Gradient mixing modes.")
     parser.add_argument("--gradient_mixing_alpha", type=float, default=1.0, help="Alpha value for gradient mixing. Mode 'max' does not depend on alpha.")
     args = parser.parse_args()
@@ -125,7 +124,7 @@ if __name__ == "__main__":
         img = cloner.poisson_blend_gray(args.gradient_mixing_mode, args.gradient_mixing_alpha)
     else:
         img = cloner.poisson_blend_rgb(args.gradient_mixing_mode, args.gradient_mixing_alpha)
-    
+
     img = (img * 255).astype(np.uint8)
     Image.fromarray(img).save(os.path.join(args.data_dir, "result.png"))
 
