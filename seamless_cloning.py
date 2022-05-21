@@ -72,7 +72,7 @@ class PoissonSeamlessCloner:
             return alpha * src_laplacian + (1 - alpha) * target_laplacian
         else:
             raise ValueError(f"Gradient mixing mode '{mode}' not supported!")
-
+    
     def poisson_blend_channel(self, src, target, gradient_mixing_mode, gradient_mixing_alpha):
         mixed_gradients = self.compute_mixed_gradients(src, target, gradient_mixing_mode, gradient_mixing_alpha)
 
@@ -125,8 +125,8 @@ if __name__ == "__main__":
     else:
         img = cloner.poisson_blend_rgb(args.gradient_mixing_mode, args.gradient_mixing_alpha)
 
-    #img = (img * 255).astype(np.uint8)
-    #Image.fromarray(img).save(os.path.join(args.data_dir, "result.png"))
+    img = (img * 255).astype(np.uint8)
+    Image.fromarray(img).save(os.path.join(args.data_dir, "result.png"))
 
     
 
