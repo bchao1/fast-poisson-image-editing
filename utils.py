@@ -81,3 +81,7 @@ def get_masked_values(values, mask):
 
 def get_alpha_blended_img(src, target, alpha_mask):
     return src * alpha_mask + target * (1 - alpha_mask)
+
+def dilate_img(img, k):
+    kernel = np.ones((k, k), np.uint8)
+    return cv2.dilate(img, kernel, iterations = 1)

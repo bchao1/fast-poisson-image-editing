@@ -6,6 +6,7 @@ An implementation of the [Poisson Image Editing](https://dl.acm.org/doi/10.1145/
 - Seamless cloning - importing gradients
 - Seamless cloning - mixing gradients
 - Seamless tiling
+- Texture flattening
 
 ## Usage
 ### Seamless cloning
@@ -36,6 +37,20 @@ To run all experiments using the given datasets, run
 ./run_tiling.sh
 ```
 
+### Texture flattening
+To test on your own dataset, run
+```
+python3 texture_flattening.py --help
+```
+- `use_edge`: Use `edge.*` edge map in the dataset folder. If this flag is not set, then computes the edge map from provided source image using Canny edge detector and binary dilation.
+- `canny_threshold`: Thresholding parameters for Canny edge detector. You can play with this parameter for different flattening results. See the [documentation](https://docs.opencv.org/4.x/da/d22/tutorial_py_canny.html) for more information.
+- `edge_dilation_kernel`: Kernel size to dilate detected edges. The kernel is a square box filter filled with ones.
+
+To run all experiments using the given datasets, run
+```
+./run_texture_flattening.sh
+```
+
 ## Results
 ### Seamless cloning
 |Source|Target|Mask|Result|
@@ -51,6 +66,10 @@ To run all experiments using the given datasets, run
 |![](data/texture2/texture.jpg)|![](data/texture2/orig_tile.png)|![](data/texture2/new_tile.png)|
 |![](data/texture3/texture.jpg)|![](data/texture3/orig_tile.png)|![](data/texture3/new_tile.png)|
 
+### Texture flattening
+|Source|Mask|Edge|Flattened|
+|--|--|--|--|
+|![](data/test5/source.jpg)|![](./data/test5/mask.png)|![](data/test5/edge_canny.png)|![](data/test5/result.png)|
 ## Notes
 - `solver == "spsolve"` gives bad results. As stated in the [documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html#scipy.sparse.linalg.spsolve) of `spsolve`, the solver assumes the solution to be sparse. However, this is not our case since the transformed source field is not sparse.
 - If you want to use conjugate gradient solvers, use `bicg`, `bicgstab` or `cgs`. Do not use `solver == "cg"` since the A matrix is not hermitian (or symmetric since A is real).
