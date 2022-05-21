@@ -12,9 +12,23 @@ An implementation of the [Poisson Image Editing](https://dl.acm.org/doi/10.1145/
 - Local illumination change
 
 ## Comparison with other implementations
-There are many open source Python implementations of Poisson image editing. However, most implementations focus only on image *bledning*, while ignoring other Poisson image editing applications listed in the paper. This implementation aims to faithfully reproduce all experiments and results presented in the paper. The following table shows implemented functionalities:
+There are many open source Python implementations of Poisson image editing. However, most implementations only focus on image *bledning*, while ignoring other Poisson image editing applications listed in the paper. This implementation aims to faithfully reproduce all experiments and results presented in the paper. The following table shows the implemented functionalities:
    
-Furthermore, this implementation is signifacantly *faster* than others. The following table shows the profiled run time of seamless cloning on different datasets:
+||[Src. 1](https://github.com/rinsa318/poisson-image-editing)|[Src. 2](https://github.com/willemmanuel/poisson-image-editing)|[Src. 3]()|This|
+|--|--|--|--|--|
+|Seamless cloning|✅|✅|✅|✅|
+|Seamless tiling|❌|❌|❌|✅|
+|Texture flattening|✅|❌|❌|✅|
+|Local illumination change|❌|❌|❌|✅|
+
+Furthermore, this implementation is signifacantly *faster* and scales much better than others. The following table shows the profiled run time of seamless cloning on different datasets:
+||[Src. 1](https://github.com/rinsa318/poisson-image-editing)|[Src. 2](https://github.com/willemmanuel/poisson-image-editing)|[Src. 3]()|This|
+|--|--|--|--|--|
+|test1|32.064|312.930|6.755|**2.474**|
+|test2|13.634|59.875|1.775|**1.508**|
+|test3|36.575|565.466|3.401|**2.493**|
+|test4|19.866|42.592|1.542|**1.520**|
+
 
 
 ## Usage
