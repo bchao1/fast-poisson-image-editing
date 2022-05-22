@@ -80,7 +80,7 @@ class PoissonTextureFlattener:
 
         # Solve Ax = b
         x = self.solver(self.A, b)
-        if len(x) > 1: # spsolve
+        if isinstance(x, tuple): # solvers other than spsolve
             x = x[0]
         new_src = np.zeros_like(src).flatten()
         new_src[self.mask_pos] = x
@@ -109,7 +109,7 @@ if __name__ == "__main__":
     parser.add_argument("--data_dir", type=str, required=True, help="Folder of mask, source, and target image files.")
     parser.add_argument("--use_edge", action="store_true", help="Use provided edge map. If not specified, computes depth map from source image.")
     parser.add_argument("--grayscale", action="store_true", help="Convert input to grayscale images.")
-    parser.add_argument("--solver", type=str, default="bicg", help="Linear system solver.")
+    parser.add_argument("--solver", type=str, default="spsolve", help="Linear system solver.")
 
     parser.add_argument("--canny_threshold", type=float, default=[100, 200], nargs="+")
     parser.add_argument("--edge_dilation_kernel", type=int, default=3)

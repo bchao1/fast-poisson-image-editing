@@ -125,7 +125,7 @@ class PoissonSeamlessCloner:
 
         # Solve Ax = b
         x = self.solver(self.A, b)
-        if len(x) > 1: # spsolve
+        if isinstance(x, tuple): # solvers other than spsolve
             x = x[0]
         new_src = np.zeros(src.size)
         new_src[self.mask_pos] = x
@@ -183,7 +183,7 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--data_dir", type=str, required=True, help="Folder of mask, source, and target image files.")
     parser.add_argument("--grayscale", action="store_true", help="Convert input to grayscale images.")
-    parser.add_argument("--solver", type=str, default="cgs", help="Linear system solver.")
+    parser.add_argument("--solver", type=str, default="spsolve", help="Linear system solver.")
     parser.add_argument("--gradient_mixing_mode", type=str, default="max", choices=["max", "alpha"], help="Gradient mixing modes.")
     parser.add_argument("--gradient_mixing_alpha", type=float, default=1.0, help="Alpha value for gradient mixing. Mode 'max' does not depend on alpha.")
     args = parser.parse_args()
