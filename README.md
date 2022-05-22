@@ -24,6 +24,7 @@ There are many open source Python implementations of Poisson image editing. Howe
 |Seamless tiling|❌|❌|❌|✅|
 |Texture flattening|✅|❌|❌|✅|
 |Local illumination change|❌|❌|❌|✅|
+|Local color change|❌|❌|❌|✅|
 
 Furthermore, this implementation is signifacantly *faster* and scales much better than others. The following table shows the profiled run time of seamless cloning on different datasets (in seconds):
 ||[Src. 1](https://github.com/rinsa318/poisson-image-editing)|[Src. 2](https://github.com/willemmanuel/poisson-image-editing)|[Src. 3](https://github.com/PPPW/poisson-image-editing)|This|
