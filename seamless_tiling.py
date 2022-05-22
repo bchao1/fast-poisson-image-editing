@@ -72,7 +72,9 @@ class PoissonSeamlessTiler:
         b = self.construct_b(inner_gradient_values, boundary_pixel_values)
 
         # Solve Ax = b
-        x = self.solver(self.A, b)[0]
+        x = self.solver(self.A, b)
+        if len(x) > 1: # spsolve
+            x = x[0]
         new_src = np.zeros_like(src).flatten()
         new_src[self.mask_pos] = x
         new_src = new_src.reshape(src.shape)

@@ -77,7 +77,9 @@ class PoissonIlluminationChanger:
         b = self.construct_b(inner_gradient_values, boundary_pixel_values)
 
         # Solve Ax = b
-        x = self.solver(self.A, b)[0]
+        x = self.solver(self.A, b)
+        if len(x) > 1: # spsolve
+            x = x[0]
         new_log_src = np.log(np.zeros_like(src).flatten() + 1e-8)
         new_log_src[self.mask_pos] = x
         new_log_src = new_log_src.reshape(src.shape)

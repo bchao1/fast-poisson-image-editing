@@ -24,10 +24,10 @@ There are many open source Python implementations of Poisson image editing. Howe
 Furthermore, this implementation is signifacantly *faster* and scales much better than others. The following table shows the profiled run time of seamless cloning on different datasets (in seconds):
 ||[Src. 1](https://github.com/rinsa318/poisson-image-editing)|[Src. 2](https://github.com/willemmanuel/poisson-image-editing)|[Src. 3](https://github.com/PPPW/poisson-image-editing)|This|
 |--|--|--|--|--|
-|test1|32.064|312.930|6.755|**1.943**|
-|test2|13.634|59.875|1.775|**1.423**|
-|test3|36.575|565.466|3.401|**2.110**|
-|test4|19.866|42.592|1.542|**1.457**|
+|test1|32.064|312.930|6.755|**2.080**|
+|test2|13.634|59.875|1.775|**1.469**|
+|test3|36.575|565.466|3.401|**2.148**|
+|test4|19.866|42.592|1.542|**1.489**|
 
 
 
@@ -98,9 +98,8 @@ python3 local_illumination_change.py --help
 |![](data/illum1/source.jpg)|![](./data/illum1/mask.jpg)|![](data/illum1/result.png)|
 
 ## Notes
-- Faster solvers: `cgs`, `bicg`
-- `solver == "spsolve"` gives bad results. First, matrix `A` might not be full rank. Second, as stated in the [documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.spsolve.html#scipy.sparse.linalg.spsolve) of `spsolve`, the solver assumes the solution to be sparse. However, this is not our case since the transformed source field is not sparse.
-- `minres` gives bad results.
+- Faster solvers: `spsolve`, `cgs`, `bicg`
+- `minres`, `spsolve` gives bad results. The latter might be due to the fact that matrix `A` is not full rank.
 - If you want to use conjugate gradient solvers, use `bicg`, `bicgstab` or `cgs`. Do not use `solver == "cg"` since the A matrix is not hermitian (or symmetric since A is real).
 - Iterative least-squares solvers `lsqr`, `lsmr` tend to be much slower.
 
