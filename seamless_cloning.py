@@ -32,8 +32,6 @@ class PoissonSeamlessCloner:
         self.mask_pos = np.searchsorted(self.pixel_ids.flatten(), self.mask_ids)
 
         self.A = self.construct_A_matrix()
-        print(self.A.shape, utils.estimate_sparse_rank(self.A))
-        exit()
 
     def construct_A_matrix(self):
 
