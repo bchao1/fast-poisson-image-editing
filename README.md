@@ -24,10 +24,10 @@ There are many open source Python implementations of Poisson image editing. Howe
 Furthermore, this implementation is signifacantly *faster* and scales much better than others. The following table shows the profiled run time of seamless cloning on different datasets (in seconds):
 ||[Src. 1](https://github.com/rinsa318/poisson-image-editing)|[Src. 2](https://github.com/willemmanuel/poisson-image-editing)|[Src. 3](https://github.com/PPPW/poisson-image-editing)|This|
 |--|--|--|--|--|
-|test1|32.064|312.930|6.755|**2.080**|
-|test2|13.634|59.875|1.775|**1.469**|
-|test3|36.575|565.466|3.401|**2.148**|
-|test4|19.866|42.592|1.542|**1.489**|
+|test1|32.064|312.930|6.755|**1.769**|
+|test2|13.634|59.875|1.775|**1.389**|
+|test3|36.575|565.466|3.401|**2.062**|
+|test4|19.866|42.592|1.542|**1.420**|
 
 
 
