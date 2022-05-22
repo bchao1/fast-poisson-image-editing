@@ -41,7 +41,7 @@ def compute_laplacian(img):
         [1, -4, 1],
         [0, 1, 0]
     ])
-    laplacian = scipy.signal.convolve2d(img, kernel, mode="same", boundary="fill")
+    laplacian = scipy.signal.fftconvolve(img, kernel, mode="same")
     return laplacian
 
 def compute_gradient(img, forward=True):
@@ -67,8 +67,8 @@ def compute_gradient(img, forward=True):
             [0, 1, 0],
             [0, 0, 0]
         ])
-    Gx = scipy.signal.convolve2d(img, kx, mode="same", boundary="fill")
-    Gy = scipy.signal.convolve2d(img, ky, mode="same", boundary="fill")
+    Gx = scipy.signal.fftconvolve(img, kx, mode="same")
+    Gy = scipy.signal.fftconvolve(img, ky, mode="same")
     return Gx, Gy
 
 def get_pixel_ids(img):

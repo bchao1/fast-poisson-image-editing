@@ -94,7 +94,8 @@ class PoissonSeamlessCloner:
         b[self.inner_pos] = inner_gradient_values
         b[self.boundary_pos] = boundary_pixel_values
         return b
-
+    
+    #@profile
     def compute_mixed_gradients(self, src, target, mode="max", alpha=1.0):
         if mode == "max":
             Ix_src, Iy_src = utils.compute_gradient(src)
@@ -160,7 +161,7 @@ class PoissonSeamlessCloner:
         
         return poisson_blended_img
 
-
+    #@profile
     def poisson_blend_rgb(self, gradient_mixing_mode, gradient_mixing_alpha):
         self.A = self.construct_A_matrix()
         poisson_blended_img_rgb = []
