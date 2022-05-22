@@ -1,6 +1,5 @@
 # Seamless cloning
 time python3 seamless_cloning.py --data_dir data/test1 --gradient_mixing_mode alpha --gradient_mixing_alpha 1.0 --solver cgs
-exit
 time python3 seamless_cloning.py --data_dir data/test2 --solver cgs
 time python3 seamless_cloning.py --data_dir data/test3 --solver cgs
 time python3 seamless_cloning.py --data_dir data/test4 --solver cgs
