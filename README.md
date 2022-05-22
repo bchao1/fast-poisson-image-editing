@@ -109,9 +109,9 @@ python3 local_illumination_change.py --help
 |![](data/illum1/source.jpg)|![](./data/illum1/mask.jpg)|![](data/illum1/result.png)|
 
 ### Local color change
-|Source|Color 1|Color 2|Color 3|Gray background|
-|--|--|--|--|--|
-|![](data/color1/source.jpg)|![](data/color1/result_color_change_60.0.png)|![](data/color1/result_color_change_80.0.png)|![](data/color1/result_color_change_100.0.png)|![](data/color1/result_gray_background_0.png)|
+|Source|Green-ish|Blue-ish|Gray background|
+|--|--|--|--|
+|![](data/color1/source.jpg)|![](data/color1/result_color_change_60.0.png)|![](data/color1/result_color_change_120.0.png)|![](data/color1/result_gray_background_0.png)|
 
 ## Notes
 - Faster solvers: `spsolve`, `cgs`, `bicg`

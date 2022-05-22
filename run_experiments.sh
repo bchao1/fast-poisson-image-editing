@@ -19,8 +19,7 @@ time python3 local_illumination_change.py --data_dir data/illum1
 
 # Local color change
 time python3 local_color_change.py --data_dir data/color1 --scale 0.5 --mode color_change --change_hue 60
-time python3 local_color_change.py --data_dir data/color1 --scale 0.5 --mode color_change --change_hue 80
-time python3 local_color_change.py --data_dir data/color1 --scale 0.5 --mode color_change --change_hue 100
+time python3 local_color_change.py --data_dir data/color1 --scale 0.5 --mode color_change --change_hue 120
 time python3 local_color_change.py --data_dir data/color1 --scale 0.5 --mode gray_background
 
 
