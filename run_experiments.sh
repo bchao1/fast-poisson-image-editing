@@ -16,3 +16,6 @@ time python3 texture_flattening.py --data_dir data/test5 \
 
 # Local illumination change
 time python3 local_illumination_change.py --data_dir data/illum1
+
+#
+time python3 seamless_cloning.py --data_dir data/test2 --scale 8 --solver multigrid

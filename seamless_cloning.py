@@ -5,6 +5,7 @@ import scipy.sparse.linalg
 from PIL import Image
 import matplotlib.pyplot as plt
 from argparse import ArgumentParser 
+import pyamg
 
 import utils
 
@@ -15,7 +16,8 @@ class PoissonSeamlessCloner:
         self.src_rgb = utils.read_image(f"{dataset_root}", "source", scale=scale, gray=False)
         self.target_rgb = utils.read_image(f"{dataset_root}", "target", scale=scale,  gray=False)
         
-        self.solver = getattr(scipy.sparse.linalg, solver)
+        self.solver = solver
+        self.solver_func = getattr(scipy.sparse.linalg, solver)
 
         self.img_h, self.img_w = self.mask.shape
 
@@ -125,9 +127,14 @@ class PoissonSeamlessCloner:
         b = self.construct_b(inner_gradient_values, boundary_pixel_values)
 
         # Solve Ax = b
-        x = self.solver(self.A, b)
-        if isinstance(x, tuple): # solvers other than spsolve
-            x = x[0]
+        if self.solver != "multigrid":
+            x = self.solver_func(self.A, b)
+            if isinstance(x, tuple): # solvers other than spsolve
+                x = x[0]
+        else:
+            # Use multigrid solver
+            ml = pyamg.ruge_stuben_solver(self.A)
+            x = ml.solve(b, tol=1e-10)
         new_src = np.zeros(src.size)
         new_src[self.mask_pos] = x
         new_src = new_src.reshape(src.shape)

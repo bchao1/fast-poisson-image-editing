@@ -5,11 +5,14 @@ An implementation of the [Poisson Image Editing](https://dl.acm.org/doi/10.1145/
 ![teaser](data/teaser.png)
 
 ## Features
-- Seamless cloning - importing gradients
-- Seamless cloning - mixing gradients
-- Seamless tiling
-- Texture flattening
-- Local illumination change
+- Poisson image editing functionalities
+    - Seamless cloning - importing gradients
+    - Seamless cloning - mixing gradients
+    - Seamless tiling
+    - Texture flattening
+    - Local illumination change
+- Supports all sparse linear system solvers in `scipy.sparse.linalg`
+- Acceleration of large input problems using multigrid methods
 
 ## Comparison with other implementations
 There are many open source Python implementations of Poisson image editing. However, most implementations only focus on image *blending*, while ignoring other Poisson image editing applications listed in the paper. This implementation aims to faithfully reproduce all experiments and results presented in the paper. The following table shows the implemented functionalities:
@@ -29,7 +32,7 @@ Furthermore, this implementation is signifacantly *faster* and scales much bette
 |test3|36.575|565.466|3.401|**1.818**|
 |test4|19.866|42.592|1.542|**1.419**|
    
-The following figure shows the scaling performance of this implementation compared to that of Src. 3:
+The following figure shows the scaling performance of this implementation compared to that of Src. 3. For fair comparison, both implementations are modified to use the same solver `scipy.sparse.linalg.spsolve`.
 ![scaling perf](./data/scale_profiling.png)
 
 
