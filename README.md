@@ -11,6 +11,7 @@ A fast, scalable, and extensive implementation of the [Poisson Image Editing](ht
     - Seamless tiling
     - Texture flattening
     - Local illumination change
+    - Local color change
 - Supports all sparse linear system solvers in `scipy.sparse.linalg`
 - Acceleration of large input problems using multigrid approaches
 
@@ -120,4 +121,3 @@ python3 local_illumination_change.py --help
 
 ## Todo
 - Add `PoissonEditor` base class for code reuse
-- Local color changes
