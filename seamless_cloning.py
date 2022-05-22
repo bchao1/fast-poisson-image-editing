@@ -17,7 +17,10 @@ class PoissonSeamlessCloner:
         self.target_rgb = utils.read_image(f"{dataset_root}", "target", scale=scale,  gray=False)
         
         self.solver = solver
-        self.solver_func = getattr(scipy.sparse.linalg, solver)
+        if solver != "multigrid":
+            self.solver_func = getattr(scipy.sparse.linalg, solver)
+        else:
+            self.solver_func = None
 
         self.img_h, self.img_w = self.mask.shape
 
@@ -203,9 +206,9 @@ if __name__ == "__main__":
         img = cloner.poisson_blend_gray(args.gradient_mixing_mode, args.gradient_mixing_alpha)
     else:
         img = cloner.poisson_blend_rgb(args.gradient_mixing_mode, args.gradient_mixing_alpha)
-        
-    #img = (img * 255).astype(np.uint8)
-    #Image.fromarray(img).save(os.path.join(args.data_dir, "result.png"))
+    
+    img = (img * 255).astype(np.uint8)
+    Image.fromarray(img).save(os.path.join(args.data_dir, "result.png"))
 
     
 

@@ -12,7 +12,7 @@ An implementation of the [Poisson Image Editing](https://dl.acm.org/doi/10.1145/
     - Texture flattening
     - Local illumination change
 - Supports all sparse linear system solvers in `scipy.sparse.linalg`
-- Acceleration of large input problems using multigrid methods
+- Acceleration of large input problems using multigrid approaches
 
 ## Comparison with other implementations
 There are many open source Python implementations of Poisson image editing. However, most implementations only focus on image *blending*, while ignoring other Poisson image editing applications listed in the paper. This implementation aims to faithfully reproduce all experiments and results presented in the paper. The following table shows the implemented functionalities:
@@ -34,6 +34,11 @@ Furthermore, this implementation is signifacantly *faster* and scales much bette
    
 The following figure shows the scaling performance of this implementation compared to that of Src. 3. For fair comparison, both implementations are modified to use the same solver `scipy.sparse.linalg.spsolve`.
 ![scaling perf](./data/scale_profiling.png)
+   
+By using multigrid solvers, editing a 1080p image can be done in less than 30 seconds, a **6.7x** speedup compared to the current fastest open source Python implementation: 
+||[Src. 3](https://github.com/PPPW/poisson-image-editing)|This (multigrid approach)|
+|--|--|--|
+|1080p image|134.896|20.814|
 
 
 ## Usage
@@ -51,7 +56,7 @@ python3 seamless_cloning.py --help
 
 - `data_dir`: Folder that contains the input image files. The folder should contain image files named `mask`, `target`, and `source`. The file extension of the files can be arbitrary, as long as the files are valid image files.
 - `grayscale`: Whether to perform blending on the grayscale images.
-- `solver`: Linear solver to use when solving the poisson blending problem. The solver should be functions in the `scipy.sparse.linalg` library. Default is `spsolve`. 
+- `solver`: Linear solver to use when solving the poisson blending problem. The value of `solver` should either be function names in the `scipy.sparse.linalg` library, or `"multigrid"`. Default is `spsolve`. 
 - `gradient_mixing_mode`: Method to mix source and target image gradients. `max` implements *3. Seamless cloning - Mixing gradients* section in the paper, while `alpha` + `gradient_mixing_alpha == 1.0` implements *3. Seamless cloning - Importing gradients* section. 
 - `gradient_mixing_alpha`: Alpha to blend source and target image gradients. Has an effect only when `gradient_mixing_mode == "alpha"`. 
 
