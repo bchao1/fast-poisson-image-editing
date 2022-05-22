@@ -195,8 +195,8 @@ if __name__ == "__main__":
     else:
         img = cloner.poisson_blend_rgb(args.gradient_mixing_mode, args.gradient_mixing_alpha)
         
-    #img = (img * 255).astype(np.uint8)
-    #Image.fromarray(img).save(os.path.join(args.data_dir, "result.png"))
+    img = (img * 255).astype(np.uint8)
+    Image.fromarray(img).save(os.path.join(args.data_dir, "result.png"))
 
     
 

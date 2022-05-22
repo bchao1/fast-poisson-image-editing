@@ -3,7 +3,7 @@ time python3 seamless_cloning.py --data_dir data/test1 --gradient_mixing_mode al
 time python3 seamless_cloning.py --data_dir data/test2 
 time python3 seamless_cloning.py --data_dir data/test3 
 time python3 seamless_cloning.py --data_dir data/test4 
-exit
+
 # Seamless tiling
 time python3 seamless_tiling.py --data_dir data/texture1 --scale 0.5
 time python3 seamless_tiling.py --data_dir data/texture2 --scale 0.5
