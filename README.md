@@ -111,7 +111,7 @@ python3 local_illumination_change.py --help
 ### Local color change
 |Source|Green-ish|Blue-ish|Gray background|
 |--|--|--|--|
-|![](data/color1/source.jpg)|![](data/color1/result_color_change_60.0.png)|![](data/color1/result_color_change_120.0.png)|![](data/color1/result_gray_background_0.png)|
+|<img src="data/color1/source.jpg" width="200"/>|<img src="data/color1/result_color_change_60.0.png" width="200"/>|<img src="data/color1/result_color_change_120.0.png" width="200"/>|<img src="data/color1/result_gray_background_0.png" width="200"/>|
 
 ## Notes
 - Faster solvers: `spsolve`, `cgs`, `bicg`
