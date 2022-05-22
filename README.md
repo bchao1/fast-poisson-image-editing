@@ -28,7 +28,9 @@ Furthermore, this implementation is signifacantly *faster* and scales much bette
 |test2|13.634|59.875|1.775|**1.389**|
 |test3|36.575|565.466|3.401|**1.818**|
 |test4|19.866|42.592|1.542|**1.419**|
-
+   
+The following figure shows the scaling performance of this implementation compared to that of Src. 3:
+![scaling perf](./data/scale_profiling.png)
 
 
 ## Usage

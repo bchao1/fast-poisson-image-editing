@@ -1,5 +1,6 @@
 others/
 test_mask.py
+compare_scaling.py
 .DS_Store
 *.lprof
 # Byte-compiled / optimized / DLL files
