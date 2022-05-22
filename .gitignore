@@ -1,6 +1,7 @@
 others/
 test_mask.py
 .DS_Store
+*.lprof
 # Byte-compiled / optimized / DLL files
 
 __pycache__/

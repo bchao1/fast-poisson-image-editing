@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 
 from skimage.segmentation import find_boundaries
 import scipy.signal
+import scipy.linalg
+import scipy.sparse
 
 
 def read_image(folder, name, scale=1, gray=False):
@@ -84,3 +86,10 @@ def get_alpha_blended_img(src, target, alpha_mask):
 def dilate_img(img, k):
     kernel = np.ones((k, k), np.uint8)
     return cv2.dilate(img, kernel, iterations = 1)
+
+def estimate_sparse_rank(A):
+    def mv(v):
+        return A @ v
+    L = scipy.sparse.linalg.LinearOperator(A.shape, matvec=mv, rmatvec=mv)
+    rank = scipy.linalg.interpolative.estimate_rank(L, 0.1)
+    return rank

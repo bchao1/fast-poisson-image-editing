@@ -9,6 +9,7 @@ from argparse import ArgumentParser
 import utils
 
 class PoissonSeamlessCloner:
+    #@profile
     def __init__(self, dataset_root, solver):
         self.mask = utils.read_image(f"{dataset_root}", "mask", scale=1, gray=True)
         self.src_rgb = utils.read_image(f"{dataset_root}", "source", scale=1, gray=False)
@@ -31,23 +32,32 @@ class PoissonSeamlessCloner:
         self.mask_pos = np.searchsorted(self.pixel_ids.flatten(), self.mask_ids)
 
         self.A = self.construct_A_matrix()
+        print(self.A.shape, utils.estimate_sparse_rank(self.A))
+        exit()
 
     def construct_A_matrix(self):
-        A = scipy.sparse.lil_matrix((len(self.mask_ids), len(self.mask_ids)))
 
         n1_pos = np.searchsorted(self.mask_ids, self.inner_ids - 1)
         n2_pos = np.searchsorted(self.mask_ids, self.inner_ids + 1)
-        n3_pos = np.searchsorted(self.mask_ids, self.inner_ids - self.img_w )
+        n3_pos = np.searchsorted(self.mask_ids, self.inner_ids - self.img_w)
         n4_pos = np.searchsorted(self.mask_ids, self.inner_ids + self.img_w)
 
+        #row_ids = np.concatenate([self.inner_pos, self.inner_pos, self.inner_pos, self.inner_pos, self.inner_pos, self.boundary_pos])
+        #col_ids = np.concatenate([n1_pos, n2_pos, n3_pos, n4_pos, self.inner_pos, self.boundary_pos])
+        #data = [1] * len(self.inner_pos) * 4 + [-4] * len(self.inner_pos) + [1] * len(self.boundary_pos)
+ 
+        #A = scipy.sparse.csr_matrix((data, (row_ids, col_ids)), shape=(len(self.mask_ids), len(self.mask_ids)))
+
+        A = scipy.sparse.lil_matrix((len(self.mask_ids), len(self.mask_ids)))
         A[self.inner_pos, n1_pos] = 1
         A[self.inner_pos, n2_pos] = 1
         A[self.inner_pos, n3_pos] = 1
         A[self.inner_pos, n4_pos] = 1
         A[self.inner_pos, self.inner_pos] = -4 
-
         A[self.boundary_pos, self.boundary_pos] = 1
-        return A.tocsr()
+        A = A.tocsr()
+        
+        return A
     
     def construct_b(self, inner_gradient_values, boundary_pixel_values):
         b = np.zeros(len(self.mask_ids))
@@ -59,8 +69,8 @@ class PoissonSeamlessCloner:
         if mode == "max":
             Ix_src, Iy_src = utils.compute_gradient(src)
             Ix_target, Iy_target = utils.compute_gradient(target)
-            I_src_amp = np.sqrt(Ix_src**2 + Iy_src**2)
-            I_target_amp = np.sqrt(Ix_target**2 + Iy_target**2)
+            I_src_amp = (Ix_src**2 + Iy_src**2)**0.5
+            I_target_amp = (Ix_target**2 + Iy_target**2)**0.5
             Ix = np.where(I_src_amp > I_target_amp, Ix_src, Ix_target)
             Iy = np.where(I_src_amp > I_target_amp, Iy_src, Iy_target)
             Ixx, _ = utils.compute_gradient(Ix, forward=False)
@@ -73,6 +83,7 @@ class PoissonSeamlessCloner:
         else:
             raise ValueError(f"Gradient mixing mode '{mode}' not supported!")
     
+    #@profile
     def poisson_blend_channel(self, src, target, gradient_mixing_mode, gradient_mixing_alpha):
         mixed_gradients = self.compute_mixed_gradients(src, target, gradient_mixing_mode, gradient_mixing_alpha)
 
@@ -84,7 +95,7 @@ class PoissonSeamlessCloner:
 
         # Solve Ax = b
         x = self.solver(self.A, b)[0]
-        new_src = np.zeros_like(src).flatten()
+        new_src = np.zeros(src.size)
         new_src[self.mask_pos] = x
         new_src = new_src.reshape(src.shape)
         poisson_blended_img = utils.get_alpha_blended_img(new_src, target, self.mask)
@@ -93,6 +104,7 @@ class PoissonSeamlessCloner:
         
         return poisson_blended_img
     
+    #@profile
     def poisson_blend_rgb(self, gradient_mixing_mode, gradient_mixing_alpha):
         poisson_blended_img_rgb = []
         for i in range(self.src_rgb.shape[-1]):
@@ -125,8 +137,8 @@ if __name__ == "__main__":
     else:
         img = cloner.poisson_blend_rgb(args.gradient_mixing_mode, args.gradient_mixing_alpha)
 
-    img = (img * 255).astype(np.uint8)
-    Image.fromarray(img).save(os.path.join(args.data_dir, "result.png"))
+    #img = (img * 255).astype(np.uint8)
+    #Image.fromarray(img).save(os.path.join(args.data_dir, "result.png"))
 
     
 
