@@ -13,6 +13,14 @@ class PoissonSeamlessTiler(PoissonImageEditor):
     def __init__(self, dataset_root, solver, scale):
         super(PoissonSeamlessTiler, self).__init__(dataset_root, solver, scale)       
 
+    def preprocess_mask(self):
+        self.mask = np.ones((self.img_h, self.img_w))
+        self.boundary_mask = np.ones((self.img_h, self.img_w))
+        self.boundary_mask[np.ix_(np.arange(1, self.img_h - 1), np.arange(1, self.img_w - 1))] = 0
+
+        self.inner_mask = self.mask - self.boundary_mask
+        return self.mask, self.inner_mask, self.boundary_mask
+
     def compute_gradients(self, src, target):
         return utils.compute_laplacian(src)
     
@@ -20,8 +28,8 @@ class PoissonSeamlessTiler(PoissonImageEditor):
         new_boundary = np.zeros_like(self.src_rgb)
         new_boundary[0] = (self.src_rgb[0] + self.src_rgb[-1]) * 0.5
         new_boundary[-1] = (self.src_rgb[0] + self.src_rgb[-1]) * 0.5
-        new_boundary[..., 0] = (self.src_rgb[..., 0] + self.src_rgb[..., -1]) * 0.5
-        new_boundary[..., -1] = (self.src_rgb[..., 0] + self.src_rgb[..., -1]) * 0.5
+        new_boundary[:, 0] = (self.src_rgb[:, 0] + self.src_rgb[:, -1]) * 0.5
+        new_boundary[:, -1] = (self.src_rgb[:, 0] + self.src_rgb[:, -1]) * 0.5
         return self.src_rgb, new_boundary
 
     def tile(self, src, x_repeat, y_repeat):
@@ -36,8 +44,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     tiler = PoissonSeamlessTiler(args.data_dir, args.solver, args.scale)
+    
     img = tiler.poisson_edit_rgb()
-
 
     orig_tile = tiler.tile(tiler.src_rgb, 2, 2)
     new_tile = tiler.tile(img, 2, 2)

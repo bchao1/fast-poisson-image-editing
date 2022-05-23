@@ -17,6 +17,12 @@ class PoissonSeamlessCloner(PoissonImageEditor):
 
         self.mask = utils.read_image(f"{dataset_root}", "mask", scale=scale, gray=True)
         self.target_rgb = utils.read_image(f"{dataset_root}", "target", scale=scale, gray=False)
+        
+        _, self.mask = cv2.threshold(self.mask, 0.5, 1, cv2.THRESH_BINARY)
+
+    def preprocess_mask(self):
+        inner_mask, boundary_mask = utils.process_mask(self.mask)
+        return self.mask, inner_mask, boundary_mask
 
     def compute_gradients(self, src, target, gradient_mixing_mode="max", gradient_mixing_alpha=1.0):
         if gradient_mixing_mode == "max":

@@ -22,9 +22,12 @@ class PoissonImageEditor(ABC):
 
         self.img_h, self.img_w = self.src_rgb.shape[:2]
 
+    @abstractmethod
+    def preprocess_mask(self):
+        pass
+
     def setup(self):
-        _, self.mask = cv2.threshold(self.mask, 0.5, 1, cv2.THRESH_BINARY) # fix here
-        self.inner_mask, self.boundary_mask = utils.process_mask(self.mask)
+        self.mask, self.inner_mask, self.boundary_mask = self.preprocess_mask()
         
         self.pixel_ids = utils.get_pixel_ids(self.mask) 
         self.inner_ids = utils.get_masked_values(self.pixel_ids, self.inner_mask).flatten()
