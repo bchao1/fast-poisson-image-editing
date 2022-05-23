@@ -84,6 +84,14 @@ python3 local_illumination_change.py --help
 ```
 - `data_dir`: Folder that contains the input image files. The folder should contain image files named `mask` and `source`. The file extension of the files can be arbitrary, as long as the files are valid image files. The illumination of the regions specified by the mask will be modified.
 
+### Local color change
+To test on your own dataset, run
+```
+python3 local_color_change.py --help
+```
+- `mode`: Color change mode. If `mode == "gray_background"`, then pixels outside the masked region will be converted to grayscale. If `mode == "color_change"`, the hue of the masked region is increased by the value specified by `change_hue` parameter. 
+- `change_hue`: Value added to the hue channel of the masked region.
+
 ## Results
 ### Seamless cloning
 |Source|Target|Mask|Result|
