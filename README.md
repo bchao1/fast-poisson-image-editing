@@ -14,6 +14,8 @@ A fast, scalable, and extensive implementation of the [Poisson Image Editing](ht
     - Local color change
 - Supports all sparse linear system solvers in `scipy.sparse.linalg`
 - Acceleration of large input problems using multigrid approaches
+- An Object-Oriented Programming approach for Poisson image editing - see branch `oop` for more details
+    - All editing functions inherit the abstract `PoissonImageEditor` class
 
 ## Comparison with other implementations
 There are many open source Python implementations of Poisson image editing. However, most implementations only focus on image *blending*, while ignoring other Poisson image editing applications listed in the paper. This implementation aims to faithfully reproduce all experiments and results presented in the paper. The following table shows the implemented functionalities:
@@ -127,6 +129,3 @@ python3 local_color_change.py --help
 - `minres` gives bad results.
 - If you want to use conjugate gradient solvers, use `bicg`, `bicgstab` or `cgs`. Do not use `solver == "cg"` since the A matrix is not hermitian (or symmetric since A is real).
 - Iterative least-squares solvers `lsqr`, `lsmr` tend to be much slower.
-
-## Todo
-- Add `PoissonEditor` base class for code reuse
