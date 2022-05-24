@@ -18,9 +18,9 @@ time python3 texture_flattening.py --data_dir data/test5 \
 time python3 local_illumination_change.py --data_dir data/illum1
 
 # Local color change
-time python3 local_color_change.py --data_dir data/color1 --mode color_change --change_hue 60
-time python3 local_color_change.py --data_dir data/color1 --mode color_change --change_hue 120
-time python3 local_color_change.py --data_dir data/color1 --mode gray_background
+time python3 local_color_change.py --data_dir data/color1 --change_hue 60
+time python3 local_color_change.py --data_dir data/color1 --change_hue 120
+time python3 gray_background.py --data_dir data/color1 
 
 
 # Use multigrid solver to edit a 1080p image

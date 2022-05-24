@@ -99,13 +99,13 @@ class PoissonImageEditor(ABC):
         return poisson_edited_channel
     
     @abstractmethod
-    def preprocess_inputs(self):
+    def preprocess_inputs(self, *args, **kwargs):
         pass
 
     def poisson_edit_rgb(self, *args, **kwargs):
         self.setup()
         self.A = self.construct_A_matrix()
-        src_rgb, target_rgb = self.preprocess_inputs()
+        src_rgb, target_rgb = self.preprocess_inputs(*args, **kwargs)
         poisson_edited_img_rgb = []
         for i in range(self.src_rgb.shape[-1]):
             poisson_edited_img_rgb.append(

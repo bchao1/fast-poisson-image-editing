@@ -17,10 +17,9 @@ class PoissonSeamlessCloner(PoissonImageEditor):
 
         self.mask = utils.read_image(f"{dataset_root}", "mask", scale=scale, gray=True)
         self.target_rgb = utils.read_image(f"{dataset_root}", "target", scale=scale, gray=False)
-        
-        _, self.mask = cv2.threshold(self.mask, 0.5, 1, cv2.THRESH_BINARY)
 
     def preprocess_mask(self):
+        _, self.mask = cv2.threshold(self.mask, 0.5, 1, cv2.THRESH_BINARY)
         inner_mask, boundary_mask = utils.process_mask(self.mask)
         return self.mask, inner_mask, boundary_mask
 
@@ -49,7 +48,6 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--data_dir", type=str, required=True, help="Folder of mask, source, and target image files.")
     parser.add_argument("--scale", type=float, default=1.0, help="Scaling image height and width.")
-    parser.add_argument("--grayscale", action="store_true", help="Convert input to grayscale images.")
     parser.add_argument("--solver", type=str, default="spsolve", help="Linear system solver.")
     parser.add_argument("--gradient_mixing_mode", type=str, default="max", choices=["max", "alpha"], help="Gradient mixing modes.")
     parser.add_argument("--gradient_mixing_alpha", type=float, default=1.0, help="Alpha value for gradient mixing. Mode 'max' does not depend on alpha.")
