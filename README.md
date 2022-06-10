@@ -21,7 +21,7 @@ A fast, scalable, and extensive implementation of the [Poisson Image Editing](ht
 There are many open source Python implementations of Poisson image editing. However, most implementations only focus on image *blending*, while ignoring other Poisson image editing applications listed in the paper. This implementation aims to faithfully reproduce all experiments and results presented in the paper. The following table shows the implemented functionalities:
    
 ||[Src. 1](https://github.com/rinsa318/poisson-image-editing)|[Src. 2](https://github.com/willemmanuel/poisson-image-editing)|[Src. 3](https://github.com/PPPW/poisson-image-editing)|This|
-|--|--|--|--|--|
+|---|---|---|---|---|
 |Seamless cloning|✅|✅|✅|✅|
 |Seamless tiling|❌|❌|❌|✅|
 |Texture flattening|✅|❌|❌|✅|
@@ -30,7 +30,7 @@ There are many open source Python implementations of Poisson image editing. Howe
 
 Furthermore, this implementation is signifacantly *faster* and scales much better than others. The following table shows the profiled run time of seamless cloning on different datasets (in seconds):
 ||[Src. 1](https://github.com/rinsa318/poisson-image-editing)|[Src. 2](https://github.com/willemmanuel/poisson-image-editing)|[Src. 3](https://github.com/PPPW/poisson-image-editing)|This|
-|--|--|--|--|--|
+|---|---|---|---|---|
 |test1|32.064|312.930|6.755|**1.799**|
 |test2|13.634|59.875|1.775|**1.389**|
 |test3|36.575|565.466|3.401|**1.818**|
@@ -41,7 +41,7 @@ The following figure shows the scaling performance of this implementation compar
    
 By using multigrid solvers, editing a 1080p image can be done in less than 30 seconds, a **6.7x** speedup compared to the current fastest open source Python implementation: 
 ||[Src. 3](https://github.com/PPPW/poisson-image-editing)|This (multigrid approach)|
-|--|--|--|
+|---|---|---|
 |1080p image|134.896|20.814|
 
 
@@ -97,7 +97,7 @@ python3 local_color_change.py --help
 ## Results
 ### Seamless cloning
 |Source|Target|Mask|Result|
-|--|--|--|--|
+|---|---|---|---|
 |![src](data/test1/source.png)|![src](data/test1/target.png)|![src](data/test1/mask.png)|![src](data/test1/result.png)|
 |![src](data/test2/source.jpg)|![src](data/test2/target.jpg)|![src](data/test2/mask.jpg)|![src](data/test2/result.png)|
 |![src](data/test3/source.png)|![src](data/test3/target.png)|![src](data/test3/mask.png)|![src](data/test3/result.png)|
@@ -105,23 +105,23 @@ python3 local_color_change.py --help
 
 ### Seamless tiling
 |Texture|Naive tile|Seamless tile|
-|--|--|--|
+|---|---|---|
 |![](data/texture2/texture.jpg)|![](data/texture2/orig_tile.png)|![](data/texture2/new_tile.png)|
 |![](data/texture3/texture.jpg)|![](data/texture3/orig_tile.png)|![](data/texture3/new_tile.png)|
 
 ### Texture flattening
 |Source|Mask|Edge|Flattened|
-|--|--|--|--|
+|---|---|---|---|
 |![](data/test5/source.jpg)|![](./data/test5/mask.png)|![](data/test5/edge_canny.png)|![](data/test5/result.png)|
 
 ### Local illumination change
 |Source|Mask|Modified|
-|--|--|--|
+|---|---|---|
 |![](data/illum1/source.jpg)|![](./data/illum1/mask.jpg)|![](data/illum1/result.png)|
 
 ### Local color change
 |Source|Green-ish|Blue-ish|Gray background|
-|--|--|--|--|
+|---|---|---|---|
 |<img src="data/color1/source.jpg" width="200"/>|<img src="data/color1/result_color_change_60.0.png" width="200"/>|<img src="data/color1/result_color_change_120.0.png" width="200"/>|<img src="data/color1/result_gray_background_0.png" width="200"/>|
 
 ## Notes
