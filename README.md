@@ -20,7 +20,7 @@ A fast, scalable, and extensive implementation of the [Poisson Image Editing](ht
 ## Comparison with other implementations
 There are many open source Python implementations of Poisson image editing. However, most implementations only focus on image *blending*, while ignoring other Poisson image editing applications listed in the paper. This implementation aims to faithfully reproduce all experiments and results presented in the paper. The following table shows the implemented functionalities:
    
-||[Src. 1](https://github.com/rinsa318/poisson-image-editing)|[Src. 2](https://github.com/willemmanuel/poisson-image-editing)|[Src. 3](https://github.com/PPPW/poisson-image-editing)|This|
+| |[Src. 1](https://github.com/rinsa318/poisson-image-editing)|[Src. 2](https://github.com/willemmanuel/poisson-image-editing)|[Src. 3](https://github.com/PPPW/poisson-image-editing)|This|
 |---|---|---|---|---|
 |Seamless cloning|✅|✅|✅|✅|
 |Seamless tiling|❌|❌|❌|✅|
@@ -29,7 +29,8 @@ There are many open source Python implementations of Poisson image editing. Howe
 |Local color change|❌|❌|❌|✅|
 
 Furthermore, this implementation is signifacantly *faster* and scales much better than others. The following table shows the profiled run time of seamless cloning on different datasets (in seconds):
-||[Src. 1](https://github.com/rinsa318/poisson-image-editing)|[Src. 2](https://github.com/willemmanuel/poisson-image-editing)|[Src. 3](https://github.com/PPPW/poisson-image-editing)|This|
+
+| |[Src. 1](https://github.com/rinsa318/poisson-image-editing)|[Src. 2](https://github.com/willemmanuel/poisson-image-editing)|[Src. 3](https://github.com/PPPW/poisson-image-editing)|This|
 |---|---|---|---|---|
 |test1|32.064|312.930|6.755|**1.799**|
 |test2|13.634|59.875|1.775|**1.389**|
@@ -40,7 +41,8 @@ The following figure shows the scaling performance of this implementation compar
 ![scaling perf](./data/scale_profiling.png)
    
 By using multigrid solvers, editing a 1080p image can be done in less than 30 seconds, a **6.7x** speedup compared to the current fastest open source Python implementation: 
-||[Src. 3](https://github.com/PPPW/poisson-image-editing)|This (multigrid approach)|
+
+| |[Src. 3](https://github.com/PPPW/poisson-image-editing)|This (multigrid approach)|
 |---|---|---|
 |1080p image|134.896|20.814|
 
